@@ -3,20 +3,21 @@ const fs = require('fs')
 const pdf = require('pdf-parse')
 const app = express()
 const port = 3000
+const upload = require("express-fileupload")
+app.use(upload())
+app.set('view engine', 'ejs')
 
 module.exports = app.listen(3001);
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.render('new.ejs');
 })
 
-app.get('/api', (req, res) => {
-    res.json({"message":"Hello API"})
-})
+app.post('/documents', async (req, res) => {
 
-app.get('/document', (req, res) => {
-  let dataBuffer = fs.readFileSync('example.pdf');
-  pdf(dataBuffer).then(function(data) {
+  document = req.files.document
+  console.log(document)
+  pdf(document.data).then(function(data) {
     res.send(data.text)
   })
 })
