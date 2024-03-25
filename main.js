@@ -1,9 +1,9 @@
 const express = require('express')
-const fs = require('fs')
 const pdf = require('pdf-parse')
 const app = express()
 const port = 3000
 const upload = require("express-fileupload")
+
 app.use(upload())
 app.set('view engine', 'ejs')
 
@@ -14,9 +14,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/documents', async (req, res) => {
-
   document = req.files.document
-  console.log(document)
   pdf(document.data).then(function(data) {
     res.send(data.text)
   })
